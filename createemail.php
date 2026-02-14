@@ -1,7 +1,6 @@
 <?php 
 require_once 'db.php';
-set_time_limit(0); 
-@pg_query($conecta, "ROLLBACK");
+
 
 $nomes = [
     "Felipe", "Bruno", "Eduardo", "Mariana", "Letícia", 
