@@ -1,4 +1,6 @@
 <?php 
+require_once 'db.php';
+
 
 $nomes = [
     "Felipe", "Bruno", "Eduardo", "Mariana", "Letícia", 
@@ -13,14 +15,33 @@ $nomes = [
     "Vitor", "Talita", "Fábio", "Raquel", "Arthur"
 ];
 
-for($i = 0; $i <= 1000 ; $i++){
+try { 
+    $pdo->beginTransaction();
+
+    $sql = "INSERT INTO email (email) VALUES (:email)";
+    $stmt = $pdo->prepare($sql);
+
+     for($i = 0; $i <= 100000 ; $i++){
 
         $nroAleatorio =  rand(0,count($nomes) - 1);
 
         $stringAleatoria = uniqid();
+
         $email = "$nomes[$nroAleatorio].$stringAleatoria@Email.com ";
 
-        echo " $email<br>" ;
+        $stmt->execute(['email' => $email]);
+
+        if ($i % 10000 == 0) {
+            echo "Progresso: $i registros inseridos... <br>";
+            flush();
+        }
+}
+    $pdo->commit();
+}
+
+catch(Exception $e) {
+    $pdo->rollBack();
+    echo "Erro: " . $e->getMessage();
 }
 
 ?> 
