@@ -1,8 +1,6 @@
 <?php 
 require_once 'db.php';
-set_time_limit(0); // Para o PHP não parar no meio dos 100 mil registros
-
-// LIMPEZA: Se houve um erro anterior, o Postgres trava. Isso destrava.
+set_time_limit(0); 
 @pg_query($conecta, "ROLLBACK");
 
 $nomes = [
@@ -35,7 +33,7 @@ try {
         $nroAleatorio = rand(0, count($nomes) - 1);
 
         $stringAleatoria = uniqid();
-        
+
         $emailGerado = $nomes[$nroAleatorio] . "." . $stringAleatoria . "@Email.com";
 
         $resultado = @pg_execute($conecta, $nomeComando, array($emailGerado));
